@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./SearchEngine.css";
 
-export default function SearchEngine() {
-  const [city, setCity] = useState("");
+export default function SearchEngine(props) {
+  const [city, setCity] = useState(props.defaultCity);
   const [loaded, setLoaded] = useState(false);
   const [weather, setWeather] = useState({});
 
@@ -19,6 +20,10 @@ export default function SearchEngine() {
 
   function handleSubmit(event) {
     event.preventDefault();
+    search();
+  }
+
+  function search() {
     let apiKey = "4a0a9aa45ad0959e9357bf0of17t2779";
     let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
     axios.get(apiUrl).then(displayWeather);
@@ -29,7 +34,7 @@ export default function SearchEngine() {
   }
 
   let form = (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="mb-3">
       <div className="row">
         <div className="col-9">
           <input
@@ -53,20 +58,44 @@ export default function SearchEngine() {
 
   if (loaded) {
     return (
-      <div>
-        {form}
-        <ul>
-          <li>Temperature: {Math.round(weather.temperature)}°C</li>
-          <li>Description: {weather.description}</li>
-          <li>Humidity: {weather.humidity}%</li>
-          <li>Wind: {weather.wind}km/h</li>
-          <li>
-            <img src={weather.icon} alt={weather.description} />
-          </li>
-        </ul>
+      <div className="Search-engine">
+        <div>
+          {form}
+          <div className="overview">
+            <h1>{city}</h1>
+            <ul>
+              <li>Last updated: 10.00 </li>
+              <li>{weather.description}</li>
+            </ul>
+          </div>
+          <div className="row">
+            <div className="col-6">
+              <div className="clearfix weather-temperature">
+                <img
+                  src={weather.icon}
+                  alt={weather.description}
+                  className="float-left"
+                />
+                <div className="float-left">
+                  <strong>{Math.round(weather.temperature)}</strong>
+                  <span className="units">
+                    <a href="/">°C</a> | <a href="/">°F</a>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="col-6">
+              <ul>
+                <li>Humidity: {weather.humidity}%</li>
+                <li>Wind: {weather.wind} km/h</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     );
   } else {
-    return form;
+    search();
+    return "Loading...";
   }
 }

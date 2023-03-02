@@ -5,21 +5,17 @@ import SearchEngine from "./SearchEngine";
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
+      <SearchEngine defaultCity="Male" />
+      <footer>
+        This app was coded by Nataliia Zazerina and is{" "}
         <a
-          className="App-link"
-          href="https://reactjs.org"
+          href="https://github.com/Nataliia-git/react-weather-app"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          open-sourced on Github
         </a>
-      </header>
-      <SearchEngine />
+      </footer>
     </div>
   );
 }
